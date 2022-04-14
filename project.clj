@@ -18,5 +18,8 @@
   :main prism.core
   :aot :all
   :repl-options {:init-ns prism.core}
-  :test-paths ["t"])
+  :source-paths ["src"]
+  :test-paths ["t"]
+  :target-path "target/%s"
+  :clean-targets ^{:protect false} [:target-path])
 

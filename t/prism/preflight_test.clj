@@ -148,4 +148,4 @@
 
 (deftest testing-ok-return
   (testing "return-if-ok"
-    (is (= full-config (return-if-ok full-config [])))))
+    (is (= full-config (return-if-ok [full-config []])))))
