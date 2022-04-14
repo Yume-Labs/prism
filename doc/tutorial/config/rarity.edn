@@ -1,0 +1,126 @@
+{:config {:name "Sample Collection"
+          :family "Yume Labs"
+          :symbol "COLL"
+          :url "https://yumelabs.io"
+          :description "This is a sample collection by Yume Labs."
+          :royalties 500
+          :no-twins true
+          :creators [{:wallet "Fk3mJaeqYjZucRs3UsGTDxyEm5q5dg39EjRoR4NPK9hM" 
+                      :share 100}]
+          :twin-outcomes [:background
+                          :color-scheme
+                          :eyes
+                          :eye-color]
+          :size 10
+          :assets-format :solana
+          :naming {:base "Sample #"
+                   :type :autoinc}}
+ :base {:layers {:background {:order 0}
+                 :body {:order 1 :image [:images :body]}
+                 :mouth {:order 2 :image [:images :mouth :smile]}
+                 :eyes {:order 3}
+                 :secondary {:order 4 :image [:images :secondary]}
+                 :overlay {:order 5 :image nil :blend :overlay}
+                 :shadows {:order 6 :image [:images :shadows] :blend :multiply}
+                 :eyes-shadows {:order 7 :blend :multiply}
+                 :highlights {:order 8 :image [:images :highlights] :blend :add}
+                 :eyes-highlights {:order 9 :blend :add}
+                 :eyes-outline {:order 10}
+                 :outline {:order 11 :image [:images :outline]}}}
+ :pregenerate []
+ :decisions [{:name :background
+                  :type :random
+                  :outcomes [{:name :day :weight 3}
+                             {:name :sunset :weight 2}
+                             {:name :night :weight 1}]}
+                 {:name :color-scheme
+                  :type :random
+                  :outcomes [:strawberry :blueberry :midnight :coder]}
+                 {:name :eyes
+                  :type :random
+                  :outcomes [:open :closed]}
+                 {:name :eye-color
+                  :filter (fn (processed) (not (= (:eyes processed) :open)))
+                  :type :random
+                  :outcomes [:red :blue :green]}
+                 {:name :gender
+                  :type :random
+                  :outcomes [:male :female]}]
+ :outcomes {:background {:day [[:attribute "Time" "Day"]
+                               [[:layers :background] {:image [:images :background :day]}]
+                               [[:layers :overlay] {:image [:images :overlay] :color [:colors :overlay :day]}]
+                               [[:layers :highlights] {:color [:colors :highlights :day]}]
+                               [[:layers :eyes-highlights] {:color [:colors :highlights :day]}]
+                               [[:layers :shadows] {:color [:colors :shadows :day]}]
+                               [[:layers :eyes-shadows] {:color [:colors :shadows :day]}]]
+                         :sunset [[:attribute "Time" "Sunset"]
+                                  [[:layers :background] {:image [:images :background :sunset]}]
+                                  [[:layers :overlay] {:image [:images :overlay] :color [:colors :overlay :sunset]}]
+                                  [[:layers :highlights] {:color [:colors :highlights :sunset]}]
+                                  [[:layers :eyes-highlights] {:color [:colors :highlights :sunset]}]
+                                  [[:layers :shadows] {:color [:colors :shadows :sunset]}]
+                                  [[:layers :eyes-shadows] {:color [:colors :shadows :sunset]}]]
+                         :night [[:attribute "Time" "Night"]
+                                 [[:layers :background] {:image [:images :background :night]}]
+                                 [[:layers :overlay] {:image [:images :overlay] :color [:colors :overlay :night]}]
+                                 [[:layers :highlights] {:color [:colors :highlights :night]}]
+                                 [[:layers :eyes-highlights] {:color [:colors :highlights :night]}]
+                                 [[:layers :shadows] {:color [:colors :shadows :night]}]
+                                 [[:layers :eyes-shadows] {:color [:colors :shadows :night]}]]}
+            :color-scheme {:strawberry [[:attribute "Color Scheme" "Strawberry"]
+                                        [[:layers :body] {:color [:colors :cream]}]
+                                        [[:layers :secondary] {:color [:colors :red]}]]
+                           :blueberry [[:attribute "Color Scheme" "Blueberry"]
+                                       [[:layers :body] {:color [:colors :cream]}]
+                                       [[:layers :secondary] {:color [:colors :blue]}]]
+                           :midnight [[:attribute "Color Scheme" "Midnight"]
+                                      [[:layers :body] {:color [:colors :grey]}]
+                                      [[:layers :secondary] {:color [:colors :blue]}]]
+                           :coder [[:attribute "Color Scheme" "Coder"]
+                                   [[:layers :body] {:color [:colors :grey]}]
+                                   [[:layers :secondary] {:color [:colors :green]}]]}
+            :eyes {:open [[:attribute "Eyes" "Open"]
+                          [[:layers :eyes-outline] {:image [:images :eyes :outline :open]}]
+                          [[:layers :eyes-highlights] {:image [:images :eyes :highlights :open]}]
+                          [[:layers :eyes-shadows] {:image [:images :eyes :shadows :open]}]
+                          [[:layers :eyes] {:image [:images :eyes :color :open]}]]
+                   :closed [[:attribute "Eyes" "Closed"]
+                            [:attribute "Eye Color" "None"]
+                            [[:layers :eyes-outline] {:image [:images :eyes :outline :closed]}]]}
+            :eye-color {:red [[:attribute "Eye Color" "Red"]
+                              [[:layers :eyes] {:color [:colors :red]}]]
+                        :blue [[:attribute "Eye Color" "Blue"]
+                               [[:layers :eyes] {:color [:colors :blue]}]]
+                        :green [[:attribute "Eye Color" "Green"]
+                                [[:layers :eyes] {:color [:colors :green]}]]}
+            :gender {:male [[:attribute "Gender" "Male"]]
+                     :female [[:attribute "Gender" "Female"]]}}
+ :resources {:images {:background {:day "doc/tutorial/res/background/day.png"
+                                   :night "doc/tutorial/res/background/night.png"
+                                   :sunset "doc/tutorial/res/background/sunset.png"}
+                      :body "doc/tutorial/res/body/body.png"
+                      :mouth {:smile "doc/tutorial/res/mouth/smile.png"}
+                      :eyes {:outline {:open "doc/tutorial/res/eyes/open/outline.png"
+                                       :closed "doc/tutorial/res/eyes/closed/outline.png"}
+                             :color {:open "doc/tutorial/res/eyes/open/color.png"}
+                             :highlights {:open "doc/tutorial/res/eyes/open/highlights.png"}
+                             :shadows {:open "doc/tutorial/res/eyes/open/shadows.png"}}
+                      :overlay "doc/tutorial/res/overlay/overlay.png"
+                      :secondary "doc/tutorial/res/secondary/secondary-color.png"
+                      :outline "doc/tutorial/res/outline/outline.png"
+                      :shadows "doc/tutorial/res/shadows/shadows.png"
+                      :highlights "doc/tutorial/res/highlights/highlights.png"}
+             :colors {:cream [255 235 215]
+                      :grey [60 50 50]
+                      :red [255 175 175]
+                      :green [175 255 175]
+                      :blue [175 175 255]
+                      :overlay {:day [127 127 127]
+                                :sunset [160 133 96]
+                                :night [45 55 110]}
+                      :highlights {:day [235 235 175]
+                                   :sunset [230 195 120]
+                                   :night [115 170 200]}
+                      :shadows {:day [30 30 205]
+                                :sunset [25 70 150]
+                                :night [40 20 100]}}}}
