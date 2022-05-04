@@ -111,7 +111,7 @@ from the official websites:
 First, pull the GitHub repository:
 
 ```
-$ git clone https://github.org/Yume-Labs/prism
+$ git clone https://github.com/Yume-Labs/prism
 ```
 
 Next, change to the directory you pulled the repository from and install 

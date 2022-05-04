@@ -29,6 +29,7 @@
                  :eyes-outline {:order 10}
                  :outline {:order 11 :image [:images :outline]}}}
  :pregenerate []
+ :guarantees []
  :decisions [{:name :background
                   :type :random
                   :outcomes [:day :sunset :night]}

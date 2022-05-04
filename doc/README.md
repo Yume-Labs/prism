@@ -117,6 +117,12 @@ more information, you can read [here](./configuration/base.md).
 The `pregenerate` section describes the pre-generated or 1/1 NFTs. For more
 information, you can read [here](./configuration/pregenerate.md).
 
+#### `guarantees`
+
+The `guarantees` section describes sets of decisions which should be guaranteed
+to exist together in the collection. For more information, you can read
+[here](./configuration/guarantees.md).
+
 #### `decisions`
 
 The `decisions` section describes how to determine outcomes, step-by-step. 

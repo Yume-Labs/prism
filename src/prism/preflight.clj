@@ -179,6 +179,14 @@
               validate-vector
               #(validate-length %1 %2 0 (get-in config [:config :size])))))
 
+(defn validate-guarantee-section
+  [[config errors]]
+  (-> [config errors]
+     (v-multi [:guarantees]
+              validate-exists
+              validate-vector
+              #(validate-length %1 %2 0 (get-in config [:config :size])))))
+
 (defn validate-decisions-section
   [[config errors]]
   (-> [config errors]
@@ -275,6 +283,7 @@
      (validate-config-section)
      (validate-base-section)
      (validate-pregenerate-section)
+     (validate-guarantee-section)
      (validate-decisions-section)
      (validate-resources)
      (handle-errors)

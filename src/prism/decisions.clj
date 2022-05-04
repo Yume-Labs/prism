@@ -57,12 +57,13 @@
 (defn make-decisions
   [node collection config nft out in]
   (go (case (:state nft)
-        :to-do (let [decisions (:decisions config)]
+        :to-do (let [decisions (:decisions config)
+                     guarantee (:guarantee nft)]
                  (loop [processed {}
                         decision (first decisions)
                         rest-decisions (next decisions)]
                    (if (nil? decision)
-                     (send-nft node collection config nft processed out in)
+                     (send-nft node collection config nft (merge processed guarantee) out in)
                      (recur (make-decision processed decision)
                             (first rest-decisions)
                             (next rest-decisions)))))

@@ -61,4 +61,24 @@
         (is (not (nil? (get-in res [:decisions :background]))) "NFT has a background")
         (is (not (nil? (get-in res [:decisions :color-scheme]))) "NFT has a color scheme")
         (is (not (nil? (get-in res [:decisions :eyes]))) "NFT has eyes")
-        (is (not (nil? (get-in res [:decisions :gender]))) "NFT has a gender")))))
+        (is (not (nil? (get-in res [:decisions :gender]))) "NFT has a gender"))))
+  (testing "make-decisions with guarantee"
+    (dotimes [n 10]
+      (let [out-ch (chan)
+            in-ch (chan)
+            node (with-test-node)]
+        (store-nft node "test" {:id 2 :state :to-do :guarantee {:color-scheme :blueberry :eyes :open :eye-color :blue}} full-config)
+        (make-decisions node
+                        "test"
+                        full-config
+                        {:id 2 :state :to-do :guarantee {:color-scheme :blueberry :eyes :open :eye-color :blue}}
+                        out-ch
+                        in-ch)
+        (let [res (<!!? out-ch)]
+          (is (= res (retrieve-nft node "test" 2)) "NFT from out channel matches database")
+          (is (= :decisions-made (:state res)) "NFT was saved with the correct state")
+          (is (= :blueberry (get-in res [:decisions :color-scheme])) "NFT has the correct color scheme from the guarantee")
+          (is (= :open (get-in res [:decisions :eyes])) "NFT has open eyes from the guarantee")
+          (is (= :blue (get-in res [:decisions :eye-color])) "NFT has the correct eye color from the guarantee")
+          (is (not (nil? (get-in res [:decisions :gender]))) "NFT has a gender")
+          (is (not (nil? (get-in res [:decisions :background]))) "NFT has a background color"))))))
