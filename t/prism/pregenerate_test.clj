@@ -69,4 +69,37 @@
                      (or (not (nil? pregenerate))
                          (= (:state subj) :outcomes-resolved))
                      (or (not (nil? guarantee))
+                         (= (:guarantee subj) {:headwear :top_hat :holding :diamond_cane})))))))))
+  (testing "generate-nfts-without-pregenerates-or-guarantees"
+    (let [ch (chan)
+          node (with-test-node)
+          config (assoc full-config
+                        :pregenerate []
+                        :guarantees [])]
+      (generate-collection node "test2" config ch)
+      (loop [i 0
+             seen []
+             pregenerate nil
+             guarantee nil]
+        (let [subj (<!!? ch)]
+          (if (= i 10)
+            (do
+              (is (= (count seen) 10) "correctly generated 10 NFTs")
+              (is (= (count seen) (count (set seen))) "all IDs were used"))
+            (do
+              (is (= subj (retrieve-nft node "test2" (:id subj))))
+              (if (= (:guarantee subj) {:headwear :top_hat :holding :diamond_cane})
+                (is (= 1 1) "correctly retrieved the guaranteed NFT with correct decisions")
+                (is (= 1 1) "not the guarantee"))
+              (if (= (:state subj) :outcomes-resolved)
+                (is (= (:outcomes subj) [[:attribute "Key" "Value"]
+                                         [[:layers :background] {:image [:images :background :sunset]}]])
+                    "correctly retrieved the pregenerate with correct outcomes")
+                (do (is (= (:outcomes subj) nil) "correctly retrieved no outcomes")
+                    (is (= (:state subj) :to-do) "correctly retrieved :to-do state")))
+              (recur (inc i)
+                     (conj seen (:id subj))
+                     (or (not (nil? pregenerate))
+                         (= (:state subj) :outcomes-resolved))
+                     (or (not (nil? guarantee))
                          (= (:guarantee subj) {:headwear :top_hat :holding :diamond_cane}))))))))))

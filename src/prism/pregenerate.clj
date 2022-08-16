@@ -66,5 +66,5 @@
         guarantees (:guarantees config)
         ids (shuffle (range 0 size))
         pregenerate-ids (take (count pregenerate) ids)
-        guarantee-ids (take-last (count guarantees) ids)]
+        guarantee-ids (vec (take-last (count guarantees) ids))]
     (generate-nfts node collection config ids pregenerate-ids guarantee-ids out)))
